@@ -37,7 +37,11 @@ export default function UserSection(props){
       
       const formData = new FormData(e.currentTarget)
 
-      const userData = Object.fromEntries(formData);
+      const userData ={ 
+        ...Object.fromEntries(formData),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
 
       const response = await fetch(`${baseUrl}/users`,{
           method: 'POST',
