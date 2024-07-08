@@ -1,18 +1,18 @@
+import Spinner from "../../spinner/Spinner";
 import UserListItem from "./user-list-item/UserListItem";
 
 export default function UserList({
     users,
-    onUserDetailsClick
+    onUserDetailsClick,
+    onUserDeleteClick,
+    isLoading
 }){
     return (
         <div className="table-wrapper">
-        {/* <!-- Overlap components  --> */}
 
-        {/* <!-- <div className="loading-shade"> -->
-        <!-- Loading spinner  -->
-        <!-- <div className="spinner"></div> -->
-<!-- 
-        No users added yet  --> */}
+        {isLoading && < Spinner />}
+{/* <!-- 
+        No users added yet  -->  */}
 
         {/* <!-- <div className="table-overlap">
               <svg
@@ -136,6 +136,7 @@ export default function UserList({
                     key={user._id} 
                     user={user}
                     onUserDetailsClick={onUserDetailsClick}
+                    onUserDeleteClick={onUserDeleteClick}
                  />
             )}
           </tbody>

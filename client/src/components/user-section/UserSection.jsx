@@ -4,6 +4,7 @@ import Search from "../search/Search";
 import UserList from "./user-list/UserList";
 import UserAdd from "./user-list/user-add/UserAdd";
 import UserDetails from "./user-details/UserDetails";
+import UserDelete from "./user-delete/UserDelete";
 
 const baseUrl = 'http://localhost:3030/jsonstore';
 
@@ -11,6 +12,8 @@ export default function UserSection(){
     const [users, setUsers] = useState([]);
     const [showAddUser, setShowAddUser] = useState(false);
     const [showUserDetails, setShpwUserDetails] = useState(null);
+    const [showUserDelete, setShowUserDelete] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
       (async function getUsers(){
@@ -18,10 +21,12 @@ export default function UserSection(){
         const response = await fetch(`${baseUrl}/users`);
         const result = await response.json();
         const usersResult = Object.values(result)
-
+          setIsLoading(false);
         setUsers(usersResult);
         } catch (err){
           console.error(err.message);
+        } finally {
+          setIsLoading(false);
         }
       })();
     }, []);
@@ -64,6 +69,21 @@ export default function UserSection(){
       setShpwUserDetails(user)
     }
 
+    const userDeleteClickHandler = (userId) => {
+      setShowUserDelete(userId);
+
+    }
+
+    const userDeleteHandler = async (userId) => {
+      await fetch(`${baseUrl}/users/${userId}`,{
+        method: 'DELETE',
+      });
+
+      setUsers(oldUsers => oldUsers.filter(user => user._id !== userId))
+
+      setShowUserDelete(null);
+    }
+
     return (
         <section className="card users-container">
         <Search/>
@@ -85,7 +105,16 @@ export default function UserSection(){
         <UserList 
           users={users}
           onUserDetailsClick={userDetailsClickHandler}
+          onUserDeleteClick={userDeleteClickHandler}
+          isLoading={isLoading}
         />
+
+        {showUserDelete && (
+          <UserDelete 
+            onClose={() => setShowUserDelete(null)}
+            onUserDelete={() => userDeleteHandler(showUserDelete)}
+          />
+        )}
   
         <button className="btn-add btn" onClick={addUserClickHandler}>Add new user</button>
   
