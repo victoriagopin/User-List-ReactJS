@@ -1,6 +1,8 @@
 import UserListItem from "./user-list-item/UserListItem";
 
-export default function UserList(){
+export default function UserList({
+    users,
+}){
     return (
         <div className="table-wrapper">
         {/* <!-- Overlap components  --> */}
@@ -128,9 +130,12 @@ export default function UserList(){
             </tr>
           </thead>
           <tbody>
-            {/* <!-- Table row component --> */}
-            <UserListItem />
-            <UserListItem />
+            {users.map(user =>
+                 <UserListItem 
+                    key={user._id} 
+                    user={user}
+                 />
+            )}
           </tbody>
         </table>
       </div>
