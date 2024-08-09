@@ -1,5 +1,7 @@
 import { useState } from "react"
 
+const baseUrl = 'http://localhost:3030/jsonstore';
+
 const initialValues = {
   search : '',
   criteria : ''
@@ -15,9 +17,22 @@ export default function Search(){
       }))
     }
 
+    const onSearch = async (e) => {
+      e.preventDefault();
+
+      const params = new URLSearchParams({
+        where: `${values.criteria}="${values.search}"`
+      })
+
+      console.log(`${baseUrl}/users?${params.toString()}`);
+      const req = await fetch(`${baseUrl}/users?${params.toString()}`);
+      const res = await req.json();
+      console.log(res);
+    }
+
     return (
        
-        <form className="search-form">
+        <form className="search-form" onSubmit={onSearch}>
           <h2>
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user"
               className="svg-inline--fa fa-user SearchBar_icon__cXpTg" role="img" xmlns="http://www.w3.org/2000/svg"
