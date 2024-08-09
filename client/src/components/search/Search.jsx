@@ -1,6 +1,22 @@
+import { useState } from "react"
+
+const initialValues = {
+  search : '',
+  criteria : ''
+}
+
 export default function Search(){
+    const [values, setValues] = useState(initialValues);
+
+    const changeValues = (e) => {
+      setValues(oldValues => ({
+        ...oldValues,
+        [e.target.name] : e.target.value
+      }))
+    }
+
     return (
-        // <!-- Search bar component -->
+       
         <form className="search-form">
           <h2>
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user"
@@ -13,7 +29,7 @@ export default function Search(){
             <span>Users</span>
           </h2>
           <div className="search-input-container">
-            <input type="text" placeholder="Please, select the search criteria" name="search" />
+            <input type="text" placeholder="Please, select the search criteria" name="search" value={values.search} onChange={changeValues}/>
             {/* <!-- Show the clear button only if input field length !== 0 --> */}
             <button className="btn close-btn">
               <i className="fa-solid fa-xmark"></i>
@@ -26,12 +42,12 @@ export default function Search(){
   
           <div className="filter">
             <span>Search Criteria:</span>
-            <select name="criteria" className="criteria">
-              <option value="">Not selected</option>
-              <option value="">First Name</option>
-              <option value="">Last Name</option>
-              <option value="">Email</option>
-              <option value="">Phone</option>
+            <select name="criteria" className="criteria" value={values.criteria} onChange={changeValues}>
+              <option value="notSelected">Not selected</option>
+              <option value="firstName">First Name</option>
+              <option value="lastName">Last Name</option>
+              <option value="email">Email</option>
+              <option value="phone">Phone</option>
             </select>
           </div>
         </form>
