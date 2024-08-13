@@ -1,4 +1,5 @@
 import { useState } from "react"
+import UserList from "../user-section/user-list/UserList";
 
 const baseUrl = 'http://localhost:3030/jsonstore';
 
@@ -9,6 +10,7 @@ const initialValues = {
 
 export default function Search(){
     const [values, setValues] = useState(initialValues);
+    const [searchResult, setSearchResult] = useState(null);
 
     const changeValues = (e) => {
       setValues(oldValues => ({
@@ -20,18 +22,21 @@ export default function Search(){
     const onSearch = async (e) => {
       e.preventDefault();
 
-      const params = new URLSearchParams({
-        where: `${values.criteria}="${values.search}"`
-      })
+      const prop = values.criteria;
+      const val = values.search;
 
-      console.log(`${baseUrl}/users?${params.toString()}`);
-      const req = await fetch(`${baseUrl}/users?${params.toString()}`);
+      const req = await fetch(`${baseUrl}/users`);
       const res = await req.json();
-      console.log(res);
+      const users = Object.values(res)
+   
+      const match = users.find(user => user[prop] == val);
+
+      setSearchResult(Object.values(match));
+      
     }
 
     return (
-       
+       <>
         <form className="search-form" onSubmit={onSearch}>
           <h2>
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user"
@@ -66,5 +71,9 @@ export default function Search(){
             </select>
           </div>
         </form>
+
+        {searchResult && <UserList users={searchResult}/>}
+        
+        </>
     )
 }
