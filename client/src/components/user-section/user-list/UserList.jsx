@@ -5,6 +5,7 @@ export default function UserList({
     users,
     onUserDetailsClick,
     onUserDeleteClick,
+    onEditClick,
     isLoading
 }){
 
@@ -138,6 +139,7 @@ export default function UserList({
                     user={user}
                     onUserDetailsClick={onUserDetailsClick}
                     onUserDeleteClick={onUserDeleteClick}
+                    onEditClick={onEditClick}
                  />
             )}
           </tbody>
