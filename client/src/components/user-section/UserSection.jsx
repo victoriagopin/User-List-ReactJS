@@ -5,6 +5,7 @@ import UserList from "./user-list/UserList";
 import UserAdd from "./user-list/user-add/UserAdd";
 import UserDetails from "./user-details/UserDetails";
 import UserDelete from "./user-delete/UserDelete";
+import Edit from "../edit/Edit";
 
 const baseUrl = 'http://localhost:3030/jsonstore';
 
@@ -13,6 +14,7 @@ export default function UserSection(){
     const [showAddUser, setShowAddUser] = useState(false);
     const [showUserDetails, setShpwUserDetails] = useState(null);
     const [showUserDelete, setShowUserDelete] = useState(null);
+    const [showEdit, setShowEdit] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [searchResult, setSearchResult] = useState(null);
  
@@ -40,6 +42,10 @@ export default function UserSection(){
 
     const addUserCloseHandler = () => {
       setShowAddUser(false);
+    }
+
+    const editUserClickHandler = (user) => {
+      setShowEdit(user);
     }
 
     const addUserSaveHandler = async (e) => {
@@ -109,8 +115,16 @@ export default function UserSection(){
           users={filteredUsers}
           onUserDetailsClick={userDetailsClickHandler}
           onUserDeleteClick={userDeleteClickHandler}
+          onEditClick={editUserClickHandler}
           isLoading={isLoading}
         />
+
+        {showEdit && (
+          <Edit 
+            user={showEdit}
+            onClose={() => setShowEdit(null)}
+          />
+        )}
 
         {showUserDelete && (
           <UserDelete 
