@@ -14,7 +14,8 @@ export default function UserSection(){
     const [showUserDetails, setShpwUserDetails] = useState(null);
     const [showUserDelete, setShowUserDelete] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-
+    const [searchResult, setSearchResult] = useState(null);
+ 
     useEffect(() => {
       (async function getUsers(){
         try{
@@ -30,6 +31,8 @@ export default function UserSection(){
         }
       })();
     }, []);
+
+    const filteredUsers = searchResult ? [searchResult] : users;
 
     const addUserClickHandler = () => {
         setShowAddUser(true);
@@ -86,7 +89,7 @@ export default function UserSection(){
 
     return (
         <section className="card users-container">
-        <Search/>
+        <Search setSearchResult={setSearchResult}/>
       
        {showAddUser && (
           <UserAdd 
@@ -102,8 +105,8 @@ export default function UserSection(){
           />
         )}
 
-        <UserList 
-          users={users}
+      <UserList 
+          users={filteredUsers}
           onUserDetailsClick={userDetailsClickHandler}
           onUserDeleteClick={userDeleteClickHandler}
           isLoading={isLoading}
