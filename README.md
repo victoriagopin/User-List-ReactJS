@@ -6,7 +6,7 @@ In this repository I will be creating a project, where you can add, delete, edit
 1. Clone the repository:
    ```bash
    git clone https://github.com/victoriagopin/User-List-ReactJS.git
-   cd Pet-Lovers-React-Project
+   cd User-List-ReactJS
 2. Install dependencies for the client:
    ```bash
    cd client
