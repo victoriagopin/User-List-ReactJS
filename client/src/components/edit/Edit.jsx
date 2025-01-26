@@ -1,9 +1,10 @@
 import { useState } from "react"
 
+const baseUrl = 'http://localhost:3030/jsonstore';
 
-export default function Edit({ user , onClose}) {
-
-    const [values, setValues] = useState(user);
+export default function Edit({ user , onClose, onUserEdit}) {
+    const [values, setValues] = useState({ ...user, _id: user._id });
+    
 
     const changeValues = (e) => {
         const { name, value } = e.target;
@@ -28,6 +29,19 @@ export default function Edit({ user , onClose}) {
         });
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const response = await fetch(`${baseUrl}/users/${values._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        });
+        const data = await response.json();
+        onUserEdit();
+    };
+
     return (
         <div className="overlay">
             <div className="backdrop" onClick={onClose}></div>
@@ -44,7 +58,7 @@ export default function Edit({ user , onClose}) {
                             </svg>
                         </button>
                     </header>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="form-row">
                             <div className="form-group">
                                 <label htmlFor="firstName">First name</label>

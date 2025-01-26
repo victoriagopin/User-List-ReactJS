@@ -5,7 +5,7 @@ export default function UserListItem({
   onUserDetailsClick,
   onUserDeleteClick,
   onEditClick
-}){
+}){  
     return (
         <tr>
               <td>

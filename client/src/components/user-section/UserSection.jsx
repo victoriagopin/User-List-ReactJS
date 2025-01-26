@@ -45,6 +45,8 @@ export default function UserSection(){
     }
 
     const editUserClickHandler = (user) => {
+      console.log(user);
+      
       setShowEdit(user);
     }
 
@@ -85,13 +87,23 @@ export default function UserSection(){
 
     const userDeleteHandler = async (userId) => {
       await fetch(`${baseUrl}/users/${userId}`,{
-        method: 'DELETE',
+        method: 'DELETE'
       });
 
       setUsers(oldUsers => oldUsers.filter(user => user._id !== userId))
 
       setShowUserDelete(null);
     }
+
+    const userEditHandler = async () => {
+      const response = await fetch(`${baseUrl}/users`);
+      const result = await response.json();
+      const usersResult = Object.values(result);
+
+      setUsers(usersResult);
+      setShowEdit(null);
+  };  
+  
 
     return (
         <section className="card users-container">
@@ -123,6 +135,7 @@ export default function UserSection(){
           <Edit 
             user={showEdit}
             onClose={() => setShowEdit(null)}
+            onUserEdit={() => userEditHandler(showEdit)}
           />
         )}
 
